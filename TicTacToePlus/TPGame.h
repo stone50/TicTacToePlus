@@ -35,7 +35,7 @@ public:
 
 	TTTP_API int getConnectX();
 
-	TTTP_API char** getBoard();
+	TTTP_API char getCellAt(int col, int row);
 
 	TTTP_API bool getGameOver();
 
