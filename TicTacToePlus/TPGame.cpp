@@ -10,7 +10,8 @@ TPGame::TPGame() :
 	gameOver(false),
 	winner('-'),
 	playerToMove('X'),
-	plyCount(0)
+	plyCount(0),
+	history(vector<vector<vector<char>>>(1, board))
 {}
 
 TPGame::TPGame(const TPGame& other) :
@@ -21,7 +22,8 @@ TPGame::TPGame(const TPGame& other) :
 	gameOver(other.gameOver),
 	winner(other.winner),
 	playerToMove(other.playerToMove),
-	plyCount(other.plyCount)
+	plyCount(other.plyCount),
+	history(other.history)
 {}
 
 TPGame::TPGame(int _boardWidth, int _boardHeight, int _connectX) :
@@ -32,11 +34,13 @@ TPGame::TPGame(int _boardWidth, int _boardHeight, int _connectX) :
 	gameOver(false),
 	winner('-'),
 	playerToMove('X'),
-	plyCount(0)
+	plyCount(0),
+	history(vector<vector<vector<char>>>(1, board))
 {}
 
 TPGame::~TPGame() {
 	board.~vector();
+	history.~vector();
 }
 
 TPGame& TPGame::operator=(const TPGame& other) {
@@ -48,6 +52,7 @@ TPGame& TPGame::operator=(const TPGame& other) {
 	winner = other.winner;
 	playerToMove = other.playerToMove;
 	plyCount = other.plyCount;
+	history = other.history;
 	return *this;
 }
 
@@ -144,6 +149,7 @@ bool TPGame::makeMove(int col, int row) {
 
 	cell = playerToMove;
 	plyCount++;
+	history.push_back(board);
 	checkGameOver(col, row);
 	if (!gameOver) {
 		playerToMove = playerToMove == 'X' ? 'O' : 'X';
@@ -165,6 +171,10 @@ int TPGame::getConnectX() {
 
 char TPGame::getCellAt(int col, int row) {
 	return board[col][row];
+}
+
+char TPGame::getCellInHistory(int ply, int col, int row) {
+	return history[ply][col][row];
 }
 
 bool TPGame::getGameOver() {
